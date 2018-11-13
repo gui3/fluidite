@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>test fluidité</title>
+    <style media="screen">
+
+#mainDiv {
+  font-family: consolas, calibri, sans-serif;
+}
+
+#readMe {
+  background: #FA7;
+  color: #FFF;
+}
+
+#showArea {
+  border: 2px dotted #555;
+}
+
+    </style>
+  </head>
+  <body>
+
+    <div id="mainDiv">
+
+      <div id="readMe">
+        <h1>test fluidité</h1>
+        <h2>
+          this is a test for fluidity module,<br/>
+          use show(text); to show some text here :
+        </h2>
+      </div>
+
+      <div id="showArea">
+
+      </div>
+
+    </div>
+
+  </body>
+
+  <script type="text/javascript" src="../fluidite.js"></script>
+  <script type="text/javascript">
+
+function show(text) {
+
+  //encode text here !!!
+
+  document.getElementById("showArea")
+    .innerHTML = text;
+}
+
+
+  </script>
+
+</html>
