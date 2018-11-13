@@ -1,0 +1,27 @@
+{
+  "name": "-fluidite",
+  "version": "0.1.0",
+  "description": "A markup language for blog editing (part of dedale project)",
+  "main": "fluidite.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gui38/fluidite.git"
+  },
+  "keywords": [
+    "markup",
+    "language",
+    "html",
+    "blog",
+    "hashtag",
+    "comment"
+  ],
+  "author": "guillaume3",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Gui38/fluidite/issues"
+  },
+  "homepage": "https://github.com/Gui38/fluidite#readme"
+}
