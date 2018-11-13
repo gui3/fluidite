@@ -2,8 +2,8 @@
 a markup language to fit the dedale app
 
 <span style="color:red; font-size: 1.5em;">
-  This module is still in development,
-  not working for now, it is useless to clone it
+  **This module is still in development,
+  not working for now, it is useless to clone it**
   (unless you are interested in developing it)
 </span>
 
