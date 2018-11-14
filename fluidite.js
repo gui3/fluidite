@@ -1,21 +1,33 @@
-
 /*
-fluidité module
+js Template flexibles-modules
+https://github.com/Gui38/flexible-modules-js
+v 0.4.0
+
+thanks to Stefan Judis :
+https://www.contentful.com/blog/2017/01/17/the-global-object-in-javascript/
+_____________________________________________________________________
+ module name : fluidite
+_____________________________________________________________________
+( Don't forget to change the module name
+at the VERY END of the file, near the arrow )
 */
 
-// CONSTANTS -------------------------------------------
-//var document;
+(function () {
+  var exported = {};
 
-const constants = {
-  //doc: document
-}
+  // start of MODULE ________________________________________________
 
-var Fluidite = (function (constants) {
+  var private = "shhhh ... it's a secret"
+
+  exported.public_message = "HELLO from flexible-modules 0.4.0 !!!"
+
+
+
   //Module ---------------------------------------------
 
   //---------------user params
 
-  this.tab = 2; //2 or 4 spaces for a tab, depends on user
+  exported.tab = 2; //2 or 4 spaces for a tab, depends on user
 
   //---------------core params
 
@@ -31,9 +43,35 @@ var Fluidite = (function (constants) {
   64 @
   */
 
+  //----------------core objects
+
+  exported.fThesaurus = function () {
+    this.learn = function ( wordName,
+                            wordDef,
+                            wordHelp=null)
+    {
+      this[wordName] = {};
+      this[wordName].def = wordDef;
+      this[wordName].help = wordHelp;
+    };
+    //return this;
+  };
+
+  exported.fReader = function () {
+    this.context= {};
+    this.waitFor= "";
+    this.translating= true;
+    this.interpreting= true;
+    this.currentWord= "";
+    this.translated= "";
+    this.lastChar=  "";
+
+    //return this;
+  };
+
   //the core thesaurus, with root functions
-  this.scriptures = {
-    thesaurus: new fThesaurus (),
+  exported.scriptures = {
+    thesaurus: new exported.fThesaurus (),
     lexicon: {
       ":":{
         def: function (arg) {
@@ -58,7 +96,7 @@ var Fluidite = (function (constants) {
 
   //---------------core functions
 
-  this.read = function (script, reader = null) {
+  exported.read = function (script, reader = null) {
     script = String(script);
 
     if ( reader == null)
@@ -123,39 +161,72 @@ var Fluidite = (function (constants) {
     return reader.translated;
   };
 
-  this.interpret = function (reader) {
+  exported.interpret = function (reader) {
     reader.translated += reader.currentWord;
 
     return reader;
   };
 
 
-  //----------------core objects
 
-  this.fThesaurus = function () {
-    this.learn = function ( wordName,
-                            wordDef,
-                            wordHelp=null)
-    {
-      this[wordName] = {};
-      this[wordName].def = wordDef;
-      this[wordName].help = wordHelp;
-    };
-    return this;
-  };
+  // end of MODULE __________________________________________________
 
-  this.fReader = function () {
-    this.context= {};
-    this.waitFor= "";
-    this.translating= true;
-    this.interpreting= true;
-    this.currentWord= "";
-    this.translated= "";
-    this.lastChar=  "";
+  var scope =
+    typeof window !== "undefined" ?
+      window :
+      typeof global !== "undefined" ?
+        global :
+        typeof self !== "undefined" ?
+          self :
+          undefined;
+  var keyScope =
+    typeof exports !== "undefined" ?
+      exports :
+      typeof module !== "undefined" ?
+        (typeof module.exports !== "undefined" ?
+          module.exports :
+          undefined) :
+        undefined;
 
-    return this;
-  };
+  // require environment ----------------------------------
+  if ( keyScope !== undefined ) {
+    for ( key in exported ) {
+      keyScope[key] = exported[key];
+    }
+  }
 
+  // global environment -----------------------------------
+  if ( scope !== undefined ) {
+    scope.
+
+// ___________________________________________________________________
+      fluidite // <= YOUR MODULE NAME HERE
+// ___________________________________________________________________
+
+        = exported;
+  }
+})();
+
+
+/*
+
+
+
+// CONSTANTS -------------------------------------------
+//var document;
+
+const constants = {
+  //doc: document
+}
+
+var Fluidite = (function (constants) {
+
+  function export (moduleObject, exportObject) {
+    var exports;
+    if (exports) {
+
+    }
+  }
 
 
 
@@ -172,3 +243,4 @@ if (exports) {
     exports[key] = _module[key];
   }
 }
+*/
