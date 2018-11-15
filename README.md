@@ -1,12 +1,27 @@
-# fluidite
+# <a name="top"></a>fluidite
 a markup language to fit the dedale app
 
 **This module is still in development,
 not working for now, it is useless to clone it**\
 (unless you are interested in developing it)
 
+## contents
+- [principle](#principle)
+- [example](#example)
+- [general rules](#generalRules)
+- [specific rules](#specificRules)
+  - [hashtags #](#hashtags)
+  - [at links @](#ats)
+  - [properties](#properties)
+  - [invisibles](#invisibles)
+  - [citations :'](#citations)
+  - [full text citations :"](#fullText)
+  - [soft comments :/](#softComs)
+  - [hard comments :x](#hardComs)
+  - [endline functions :>](#endLines)
 
-## principle
+
+## <a name="principle"></a>principle
 *fluidité should be a markup language
 not as simple as markdown,
 but more permissive :
@@ -16,8 +31,9 @@ for example an ASCI bar.\
 #hashtags and @citations
 are meant to be part of the language itself*
 
+[=> top](#top)
 
-## example
+## <a name="example"></a>example
 ```
 :h1> this is a h1 title with class ._fluidite
 
@@ -45,7 +61,9 @@ htmlSection;
 
 ```
 
-## general rules
+[=> top](#top)
+
+## <a name="generalRules"></a>general rules
 *let's write OK by the time a rule works*
 
 - all words and spaces are kept, outside of interpreted functions
@@ -53,22 +71,40 @@ htmlSection;
 - to call variable or function F without argument **:F;**
 - functions return html (or any chosen rendering langage)
 
-## specific rules
+[=> top](#top)
+
+## <a name="specificRules"></a>specific rules
 *same with OK*
 
-- **#name;** or **#: name with spaces #;**
-creates a link to function ```_fluidite.Hashtag(name);```
+### <a name="hashtags"></a># hashtags
+```#name;``` or ```#: name with spaces #;```
+creates either
+- a link to adress **(current page)/hashtag?name%20with%20spaces**
+- a link to function ```_fluidite.hashtag("name with spaces");```
+depending of fluidite core properties defined by ...you
 
-- ```@ref;``` or ```@ref: options @;```
-creates a link to function ```_fluidite.At(ref, options);```
+### <a name="ats"></a>@ at links
+```@ref;``` or ```@ref: options @;```
+creates either
+- a link to adress **https://ref?options**
+- a link to function ```_fluidite.at(ref, options);```
+depending of fluidite core properties defined by ...you again
 
-- **#name :: definition #;**
+### <a name="properties"></a>properties
+**#name :: definition #;**
 stores "definition" into the variable "name"
 that can be called later with ":name;"
 
-- by default, invisibles (spaces, tab, backspaces)
-that are at the beginning and the end of an argument
-are not taken :
+### <a name="invisibles"></a>invisibles
+All invisibles (spaces, tab, backspaces) are rendered,
+for instance backspaces are translated as <br/> in html,
+and a sequel of 4 spaces like this "&nbsp; &nbsp "\
+*One out of two spaces must be a basic space 
+otherwise word wrapping does not work*\
+
+by default, invisibles that are 
+at the beginning and the end of an argument
+are not rendered :
 ```
 :text
   <-text start here
@@ -79,7 +115,11 @@ are not taken :
 
 text;
 ```
-- to begin or end an argument with invisibles
+
+[=> top](#top)
+
+### <a name="citations"></a>:' citations ';
+to begin or end an argument with invisibles
 one must use :' ';\
 this function is one of the few
 that don't need an invisible after
@@ -93,7 +133,9 @@ that don't need an invisible after
 ';
 text;
 ```
-- calls like :hello; are still translated inside :' ';,
+
+### <a name="fullText"></a>:" full text citations ":
+calls like :hello; are still translated inside :' ';,
 to make a text full text, use  :" ";\
 This function is the second not to need a separated word
 ```
@@ -103,21 +145,29 @@ This function is the second not to need a separated word
   you can also call anything here with no danger
   like #; @; or #hello;";
 ```
-- to hide something from the renderer,
-but still have the content interpreted,
+
+### <a name="softComs"></a>:/ soft comments /;
+to **hide** something from the renderer,
+but still have the content **interpreted**,
 one should use :/ /;
 ```
 this text appear
 :/ this text is hidden but :hello; is called /;
 ```
-- to comment, with no renderer AND no interpretation,
+
+### <a name="hardComs"></a>:x hard comments x;
+to comment, with **no render AND no interpretation**,
 one should use :x x;
 ```
 this is text :x this is comment x;
 ```
-- one that would be very nice,
+
+### <a name="endLines"></a>:f> endline functions
+one that would be very nice,
 :F> would take the end of line and send it to F
 ```
 :h2> this is a title
 this is text :x> this is an endline comment
 ```
+
+[=> top](#top)
