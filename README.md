@@ -9,6 +9,10 @@ not working for now, it is useless to clone it**\
 - [principle](#principle)
 - [example](#example)
 - [general rules](#generalRules)
+  - [render all](#renderAll)
+  - [machine call](#machineCall)
+  - [separate words](#separateWords)
+  - [close priority](#closePriority)
 - [specific rules](#specificRules)
   - [hashtags #](#hashtags)
   - [at links @](#ats)
@@ -19,7 +23,7 @@ not working for now, it is useless to clone it**\
   - [soft comments :/](#softComs)
   - [hard comments :x](#hardComs)
   - [endline functions :>](#endLines)
-
+- [what's next (to-do list)](#next)
 
 ## <a name="principle"></a>principle
 *fluidité should be a markup language
@@ -66,10 +70,39 @@ htmlSection;
 ## <a name="generalRules"></a>general rules
 *let's write OK by the time a rule works*
 
-- all words and spaces are kept, outside of interpreted functions
+### <a name="renderAll"></a>"render all" rule
+all words, characters and spaces are rendered as is, 
+outside of interpreted functions
+
+### <a name="machineCall"></a>"machine call" rule
+words that need interpretation, 
+to be translated in something else than the word itself,
+need to be called with :word and closed with word;
 - to call variable or function F you call **:F argument F;**
 - to call variable or function F without argument **:F;**
-- functions return html (or any chosen rendering langage)
+functions return html (or any chosen rendering langage)\
+**notable exceptions**\
+#hastags and @at words,
+see specific rules.
+
+### <a name="separateWords"></a>"separate words" rule
+to be interpreted, words must be separated
+with at least one invisible (space, backspace, tab)
+or one non-word character ( : ; / ( ) , ...)
+**notable exceptions**\
+:' :" :/ and :x at least can be joined to another word,
+see specific rules.
+
+### <a name="closePriority"></a>"close priority" rule
+when a machine call is closed with call; or any closing tag,
+all tags open since the call of this function are closed too,
+there is no tresspassing between arguments.
+ex :
+```
+:h1 this title is :em italic till the end h1;
+this text is not italic anymore
+```
+
 
 [=> top](#top)
 
@@ -171,3 +204,7 @@ this is text :x> this is an endline comment
 ```
 
 [=> top](#top)
+
+# <a name="next"></a>What's next (to-do list)
+there's all to do at the moment,
+come back later for a real to-do list.
