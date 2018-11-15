@@ -7,7 +7,7 @@ not working for now, it is useless to clone it**\
 
 
 ## principle
-*fluitité should be a markup language
+*fluidité should be a markup language
 not as simple as markdown,
 but more permissive :
 you sould be able to write almost
@@ -19,29 +19,29 @@ are meant to be part of the language itself*
 
 ## example
 ```
-:>h1 this is a h1 title with class ._fluidite
+:h1> this is a h1 title with class ._fluidite
 
 :hLine;
 above this should be a line
 
-you need to go to @https://thisPage;
+you need to go to @web:https://thisPage;
 or to search for some #hashtags;
 
 :/this will not appear in html,
 but this page has an author :
-#author:: guillaume3 #; /:
+#author:: guillaume3 #; /;
 
-:X this is a true comment,
- i can write anything X;
+:x this is a true comment,
+ i can write anything x;
 
-some text :>X same here, but it's an endline comment
+some text :x> same here, but it's an endline comment
 
-:html
+:htmlSection
   <p>this section is rendered as is<br/>
   spaces and
   backspaces
   are ignored here</p>
-html;
+htmlSection;
 
 ```
 
@@ -93,7 +93,7 @@ that don't need an invisible after
 ';
 text;
 ```
-- calls like :hello; are still interpreted inside :";,
+- calls like :hello; are still translated inside :' ';,
 to make a text full text, use  :" ";\
 This function is the second not to need a separated word
 ```
@@ -111,13 +111,13 @@ this text appear
 :/ this text is hidden but :hello; is called /;
 ```
 - to comment, with no renderer AND no interpretation,
-one should use :X X;
+one should use :x x;
 ```
-this is text :X this is comment X;
+this is text :x this is comment x;
 ```
 - one that would be very nice,
-:>F would take the end of line and send it to F
+:F> would take the end of line and send it to F
 ```
-:>h1 this is a title
-this is text :>X this is an endline comment
+:h2> this is a title
+this is text :x> this is an endline comment
 ```

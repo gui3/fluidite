@@ -7,9 +7,8 @@ thanks to Stefan Judis :
 https://www.contentful.com/blog/2017/01/17/the-global-object-in-javascript/
 _____________________________________________________________________
  module name : fluidite
+ version : 0.1.2
 _____________________________________________________________________
-( Don't forget to change the module name
-at the VERY END of the file, near the arrow )
 */
 
 (function () {
@@ -18,12 +17,9 @@ at the VERY END of the file, near the arrow )
   // start of MODULE ________________________________________________
 
   var private = "shhhh ... it's a secret"
-
   exported.public_message = "HELLO from flexible-modules 0.4.0 !!!"
 
 
-
-  //Module ---------------------------------------------
 
   //---------------user params
 

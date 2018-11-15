@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title> fEditor </title>
+
+    <style media="screen">
+
+html,
+body,
+#mainDiv {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+    </style>
+
+  </head>
+
+
+
+  <body id="body">
+
+    <div id="mainDiv">
+
+    </div>
+
+  </body>
+
+  <script type="text/javascript" src="../fluidite.js"></script>
+  <script type="text/javascript" src="f_editor.js"></script>
+  <script type="text/javascript">
+
+window.onload = function () {
+
+  f_editor._u.silentLog = false;
+  //comment this in production !!!!!!!
+
+  var _editor = new f_editor.editor()
+  .draw(
+    document,
+    document.getElementById("mainDiv")
+  );
+
+  f_editor.css.setOrigin(
+    document,
+    document.getElementById("body")
+  );
+
+};
+
+
+  </script>
+
+</html>
