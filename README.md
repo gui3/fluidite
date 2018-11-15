@@ -77,22 +77,22 @@ htmlSection;
 *same with OK*
 
 ### <a name="hashtags"></a># hashtags
-```#name;``` or ```#: name with spaces #;```
+```#name;``` or ```#: name with spaces #;```\
 creates either
 - a link to adress **(current page)/hashtag?name%20with%20spaces**
-- a link to function ```_fluidite.hashtag("name with spaces");```
+- a link to function ```_fluidite.hashtag("name with spaces");```\
 depending of fluidite core properties defined by ...you
 
 ### <a name="ats"></a>@ at links
-```@ref;``` or ```@ref: options @;```
+```@ref;``` or ```@ref: options @;```\
 creates either
 - a link to adress **https://ref?options**
-- a link to function ```_fluidite.at(ref, options);```
+- a link to function ```_fluidite.at(ref, options);```\
 depending of fluidite core properties defined by ...you again
 
 ### <a name="properties"></a>properties
 **#name :: definition #;**
-stores "definition" into the variable "name"
+stores "definition" into the variable "name"\
 that can be called later with ":name;"
 
 ### <a name="invisibles"></a>invisibles
