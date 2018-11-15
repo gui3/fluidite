@@ -121,7 +121,9 @@ need to be called with :word and closed with word;
 functions return html (or any chosen rendering langage)
 
 **notable exceptions**\
-#hastags and @at words,
+```
+#hastags and @at words
+```
 see specific rules.
 
 
@@ -196,7 +198,7 @@ for instance backspaces are translated as ```<br/>``` in html,
 and a sequel of 4 spaces like this ```&nbsp; &nbsp; ```\
 - *One out of two spaces must be a basic space
 otherwise word wrapping does not work*
-- *the first space must be a nbsp otherwise it will be ignored
+- *the first space must be a nbsp otherwise it will be ignored*
 
 by default, invisibles that are
 at the beginning and the end of an argument
