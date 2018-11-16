@@ -61,17 +61,12 @@ I use to put spaces, linebreaks and ASCI bars to decorate my texts,
 and that is a **pain** in markdown, especially linebreaks
 (as you will probably see here)
 
-So I decided to **create my own markup language**
-(French people and **pretention** you know)
-to fit my requirements. And I liked it, very beaucoup.\
-Now comes the hard part, *coding it*...
+...the **name** ?? I settled long ago for **fluidity**,
+but you guess, fluidity was taken. In npm, in github,
+everywhere ... finding a new name is a pain, so I'll settle there
+for the french translation **fluidité**, with no accent.
 
-...Ah and the **name** ?? I settled long ago for **fluidity**,
-that is a wonderful word,
-speaking of a language that waves between human and machine texts...\
-But you guess, fluidity was taken. In npm, in github, in the dictionnary,
-everywhere ... but finding a new name is a pain, so I'll settle there
-for the french translation **fluidité**, with no accent of course.
+Ok now let's code this as good as I can.
 
 [=> top](#top)
 

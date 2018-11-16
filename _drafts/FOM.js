@@ -1,38 +1,11 @@
 
 
 var FOM = {
-  script: {
-    0: {
-      operators: ["h1"],
-      0: "there is the title"
-    },
-    1: {
-      operators: [],
-      0: ""
-      1:
-    }
-  }
+
 }
 
-var FOM = {
-  global:{
-    0: {
-      operators: ["h1"],
-      lines:
-    },
-    1: {
-
-    },
-    2: {
-
-    },
-    3: {
-
-    },
-    4: {
-
-    },
-  }
+var f_Element = {
+  children:
 }
 
 
