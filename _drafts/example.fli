@@ -2,7 +2,7 @@
 :/ #global.exampleFluidite ::
 :_explicitEnd /;
 
-:h1> this is a h1 title with class ._fluidite
+:h1> this is a h1 title with class
 
 :hLine;
 above this should be a line
@@ -21,11 +21,11 @@ but this page has an author :
 
 some text :x> same here, but it's an endline comment
 
-:translate:html
+:translate.html
   <p>this section is rendered as is<br/>
   spaces and
   backspaces
   are ignored here</p>
-translate:html;
+translate.html;
 
 :/ #exampleFluidite; /;

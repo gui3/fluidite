@@ -1,8 +1,8 @@
 # <a name="top"></a>fluidite
 a markup language to fit the dedale app
 
-**This module is still in development,
-not working for now, it is useless to clone it**\
+**This module is still IN DEVELOPMENT,
+not working for now, it is USELESS to CLONE or INSTALL it**\
 (unless you are interested in developing it)
 
 ## contents
@@ -33,9 +33,11 @@ not as simple as markdown,
 but more permissive :
 you sould be able to write almost
 anything you want and render as such,
-for example an ASCI bar.\
+for example an ASCI bar.*
+```
 #hashtags and @citations
-are meant to be part of the language itself*
+```
+*are meant to be part of the language itself*
 
 [=> top](#top)
 
@@ -55,8 +57,8 @@ I needed something fast, just like **regular hashtags**,
 not to provide full links.
 
 Another reason, though markdown is a wonderfull language,
-I use to put spaces, backspaces and ASCI bars to decorate my texts,
-and that is a **pain** in markdown, especially backspaces
+I use to put spaces, linebreaks and ASCI bars to decorate my texts,
+and that is a **pain** in markdown, especially linebreaks
 (as you will probably see here)
 
 So I decided to **create my own markup language**
@@ -71,6 +73,8 @@ But you guess, fluidity was taken. In npm, in github, in the dictionnary,
 everywhere ... but finding a new name is a pain, so I'll settle there
 for the french translation **fluidité**, with no accent of course.
 
+[=> top](#top)
+
 ____________
 
 ## <a name="example"></a>example
@@ -80,7 +84,7 @@ ____________
 :hLine;
 above this should be a line
 
-you need to go to @web:https://thisPage;
+you need to go to @https://thisPage;
 or to search for some #hashtags;
 
 :/this will not appear in html,
@@ -95,7 +99,7 @@ some text :x> same here, but it's an endline comment
 :htmlSection
   <p>this section is rendered as is<br/>
   spaces and
-  backspaces
+  linebreaks
   are ignored here</p>
 htmlSection;
 
@@ -141,7 +145,7 @@ it will also be ignored and rendered as is (:hello)
 
 ### <a name="separateWords"></a>"separate words" rule
 to be interpreted, words must be separated
-with at least one invisible (space, backspace, tab)
+with at least one invisible (space, linebreak, tab)
 or one non-word character ( : ; / ( ) , ...)
 
 **notable exceptions**\
@@ -193,8 +197,8 @@ stores "definition" into the variable "name"\
 that can be called later with ":name;"
 
 ### <a name="invisibles"></a>invisibles
-All invisibles (spaces, tab, backspaces) are rendered,
-for instance backspaces are translated as ```<br/>``` in html,
+All invisibles (spaces, tab, linebreaks) are rendered,
+for instance linebreaks are translated as ```<br/>``` in html,
 and a sequel of 4 spaces like this ```&nbsp; &nbsp; ```\
 - *One out of two spaces must be a basic space
 otherwise word wrapping does not work*
@@ -207,7 +211,7 @@ are not rendered :
 :text
   <-text start here
     these spaces and
-      backspaces are taken
+      linebreaks are taken
  but not those who follow
       the arrow ->
 
@@ -226,7 +230,7 @@ that don't need an invisible after
 :text
 :'    <- these spaces
     are part of the argument
-  and so do these backspaces ->
+  and so do these linebreaks ->
 
 ';
 text;
@@ -276,9 +280,9 @@ ________
 there's all to do at the moment,
 come back later for a real to-do list.
 
-### the backspace problem
+### the linebreak problem
 if one wants to write code in little lines
-but not have the backspace (join two lines)
+but not have the linebreak (join two lines)
 he could use
 ```
 this is line ONE :x
@@ -286,7 +290,7 @@ x;this is still line ONE
 ```
 but this syntax is quite unfriendly,
 we could find some ending tag to signify
-"we don't want the backspace", like
+"we don't want the linebreak", like
 ```
 this is line ONE :-
 this is also line ONE
@@ -296,7 +300,7 @@ would be a non-separated word too.
 The problem is what to do with a :-
 that would not be at the end of the line ?
 Shall we comment all the remaining ? this creates doublon
-with :x>, and we can't give backspace removal to an endline comment,
+with :x>, and we can't give linebreak removal to an endline comment,
 that would be a pain :
 ```
 lorem ipsum :x> this is endline comment
@@ -305,3 +309,6 @@ that we don't want
 ```
 this is no urgent issue, but I think I'll settle for :-
 and use it only at the end of lines, otherwise "render unknown" rule.
+
+
+[=> top](#top)
