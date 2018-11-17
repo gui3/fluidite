@@ -29,6 +29,7 @@ not working for now, it is USELESS to CLONE or INSTALL it**\
     - [endline functions :>](#endLines)
     - [kill line command :- (?)](#killLine)
 - [MAKING OF](#makingOf)
+  - [pull rules](#pull)
   - [what's done](#done)
   - [what's next (to-do list)](#next)
 
@@ -86,25 +87,34 @@ ____________
 :hLine;
           above this should be a line
 
-you need to go to @https://thisPage;
+you need to go to @https://thisPage; :-
 or to search for some #hashtags;
 
-:/this will not appear in html,
+for mails, do you prefer
+:mail guillaume.3.7.13@gmail.fr mail;
+or @guillaume.3.7.13@gmail.fr@; ?
+        (I like both)
+
+:/
+this will not appear in html,
 but this page has an author :
-#author:: guillaume3 #; /;
+#author:: guillaume3 #;
+/;
 
 :x this is a true comment,
  i can write anything x;
 
-some text :x> same here, but it's an endline comment
+some text :x> same here, but it's an #endline; comment
 
-:htmlSection
+:translate.html
   <p>this section is rendered as is<br/>
   spaces and
-  linebreaks
+  backspaces
   are ignored here</p>
-htmlSection;
+translate.html;
 
+:h2 unknown sequences h2; (suggest more)
+ :  ;    ;:
 ```
 
 [=> top](#top)
@@ -305,11 +315,83 @@ ________
 # <a name="makingOf"></a>Making Of
 
 ## <a name="done"></a>What's done
+or what's in progress, since nothing is done yet
 
-- nothing
+### Parser (in progress)
+the aim is to parse the script and create
+a *fDOM*, those structure is still not fixed.
 
-(currently working on regexes for the parser to create a fDOM,
-kind of cool)
+- 1st step - cutting in good pieces
+
+*seems in good way (in drafts)*
+
+parses the string to create a humanDOM.
+The big regex creator is ready,
+the parsing function is ready,
+the structure of the result is yet :
+
+```js
+{
+  0: {value: "↵", group: 9, type: "lineBreak"}
+  1: {value: ":h1>", group: 1, type: "loneTag"}
+  2: {value: " ", group: 8, type: "spacing"}
+  3: {value: "this", group: 11, type: "word"}
+  4: {value: " ", group: 8, type: "spacing"}
+}
+```
+
+text is cut in semantic groups. There are 13 regex groups
+of which 8 are matches :
+
+```js
+humanW.rexGroups = {
+  1: "loneTag",
+  2: "X", // (loneTag label's last char)",
+  3: "openTag",
+  4: "X", // (openTag label's last char)",
+  5: "closeTag",
+  6: "X", // (closeTag label's last char)",
+  7: "setTag",
+  8: "spacing",
+  9: "lineBreak",
+  10: "X", // (lineBreak again)",
+  11: "word", // (non interpreted words)",
+  12: "X", // (word's last char)"
+  13: "unknown" // (word's last char)"
+}
+```
+
+here is the big regex if you want to try it
+( remove the linebreaks of course )
+
+```
+([:#@]([^ \t\r\n:#@>;-])*[>;-])|([:#@]([^ \t\r\n:#@>;-])+)|
+(([^ \t\r\n:#@>;-])+[>;-])|(::)|([ \t]+)|
+((\r|\n|\r\n))|(([^ \t\r\n:#@>;-])+)|(.+)
+```
+
+### next step
+
+the cutting needs now to be cut again,
+to separate function names for example,
+but ALSO merging.
+
+for example
+for email adresses blabla@caramail.fr
+that gives "blabla" word "@caramail.fr" openTag
+or http links https://hello.fr/
+that gives "https" word "://hello.fr/" openTag
+
+the idea is to read the humanDOM (sh- name I know)
+and to make the fDOM which would cut the text
+in sections, with
+- one or 0 openTag
+- the argument of it
+- the children (sections inside the argument)
+- one or 0 closingTag
+
+something like that I guess
+
 
 ## <a name="next"></a>What's next (to-do list)
 there's all to do at the moment,

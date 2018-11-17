@@ -13,6 +13,11 @@ var fli =
 you need to go to @https://thisPage; :-
 or to search for some #hashtags;
 
+for mails, do you prefer
+:mail guillaume.3.7.13@gmail.fr mail;
+or @guillaume.3.7.13@gmail.fr@; ?
+        (I like both)
+
 :/
 this will not appear in html,
 but this page has an author :
@@ -30,6 +35,9 @@ some text :x> same here, but it's an #endline; comment
   backspaces
   are ignored here</p>
 translate.html;
+
+:h2 unknown sequences h2; (suggest more)
+ :  ;     ;:
 `
 
 
@@ -64,142 +72,146 @@ rex.group = function (raw) {
 };
 
 
-// machineWords ---------------------------------------------------
+// Machine words _________________________________________________
 var machineW = {} ;
 
-  machineW.listenOperatorC = new rex.chars(":");
-  machineW.hastagOperatorC = new rex.chars("#");
-  machineW.atOperatorC = new rex.chars("@");
+//open operators -----------------------
+machineW.listenOperatorC = new rex.chars(":");
+machineW.hastagOperatorC = new rex.chars("#");
+machineW.atOperatorC = new rex.chars("@");
+// close operators --------------------
+machineW.endlineOperatorC = new rex.chars(">");
+machineW.execOperatorC = new rex.chars(";");
+machineW.noBrOperatorC = new rex.chars("-");
+// others ----------------------------
+machineW.setOperatorC = new rex.chars("::");
 
+machineW.spaceS = new rex.set(" \\t");// no \s because it contains \r
+machineW.carriageC = new rex.chars("\\r");
+machineW.newLineC = new rex.chars("\\n");
+
+// processing the regexes ---------------------------------
 machineW.openOperatorS = new rex.set (
   machineW.listenOperatorC.one+
   machineW.hastagOperatorC.one+
   machineW.atOperatorC.one
 )
-
-  machineW.endlineOperatorC = new rex.chars(">");
-  machineW.execOperatorC = new rex.chars(";");
-  machineW.noBrOperatorC = new rex.chars("-");
-
 machineW.closeOperatorS = new rex.set(
   machineW.endlineOperatorC.one+
   machineW.execOperatorC.one+
   machineW.noBrOperatorC.one
 )
-
-machineW.setOperatorC = new rex.chars("::");
-
-machineW.spaceS = new rex.set(" \\t");// no \s because it contains \r
-
-machineW.carriageC = new rex.chars("\\r");
-machineW.newLineC = new rex.chars("\\n");
-
 machineW.endLineG = new rex.group(
   machineW.carriageC.one+"|"+
   machineW.newLineC.one+"|"+
   machineW.carriageC.one+machineW.newLineC.one
 ); // thanks Peter Van der Wal for (\\r\\n|\\r|\\n)
 //https://stackoverflow.com/questions/20056306/match-linebreaks-n-or-r-n
-
 machineW.invisibleS = new rex.set (
   machineW.spaceS.raw+
   machineW.carriageC.one+
   machineW.newLineC.one
-
 )
-
-// ([\s\t\r]|(\r\n|\r|\n).|[:#@]|[>;-])
 machineW.endWordS = new rex.set (
   machineW.invisibleS.raw+
   machineW.openOperatorS.raw+
   machineW.closeOperatorS.raw
 )
-
-
 machineW.labelCharG = new rex.group (
   machineW.endWordS.not
 )
 
-// humanWords ------------------------------------------------------
-
+// Human Words _________________________________________________
 var humanW = {};
 
-humanW.loneTagG =
+humanW.loneTagG = new rex.group(
   machineW.openOperatorS.one+
   machineW.labelCharG.any+
-  machineW.closeOperatorS.one;
-humanW.openTag =
+  machineW.closeOperatorS.one
+);
+humanW.openTagG = new rex.group(
   machineW.openOperatorS.one+
-  machineW.labelCharG.many;
-humanW.closeTagG =
+  machineW.labelCharG.many
+);
+humanW.closeTagG = new rex.group(
   machineW.labelCharG.many+
-  machineW.closeOperatorS.one;
-humanW.setTagG =
-  machineW.setOperatorC.one;
-humanW.spacingG =
-  machineW.spaceS.many;
-humanW.lineBreakG =
-  machineW.endLineG.one;
-humanW.wordG =
-  machineW.labelCharG.many;
+  machineW.closeOperatorS.one
+);
+humanW.setTagG = new rex.group(
+  machineW.setOperatorC.one
+);
+humanW.spacingG = new rex.group(
+  machineW.spaceS.many
+);
+humanW.lineBreakG = new rex.group(
+  machineW.endLineG.one
+);
+humanW.wordG = new rex.group(
+  machineW.labelCharG.many
+);
 
+// HUMAN PARSER ________________________________________________
 
-
-
-
-
-
-
-
-
-/*
-while ((myArray = myRe.exec(str)) !== null) {
-  var msg = 'Found ' + myArray[0] + '. ';
-  msg += 'Next match starts at ' + myRe.lastIndex;
-  console.log(msg);
+// parsing regexp -----------------------------------------
+humanW.rexString =
+  humanW.loneTagG.one+"|"+
+  humanW.openTagG.one+"|"+
+  humanW.closeTagG.one+"|"+
+  humanW.setTagG.one+"|"+
+  humanW.spacingG.one+"|"+
+  humanW.lineBreakG.one+"|"+
+  humanW.wordG.one+
+  "|(.+)" // gets all words not taken, for instance a single : or ;
+  ;
+// regex groups in human word parser -----------
+humanW.rexGroups = {
+  1: "loneTag",
+  2: "X", // (loneTag label's last char)",
+  3: "openTag",
+  4: "X", // (openTag label's last char)",
+  5: "closeTag",
+  6: "X", // (closeTag label's last char)",
+  7: "setTag",
+  8: "spacing",
+  9: "lineBreak",
+  10: "X", // (lineBreak again)",
+  11: "word", // (non interpreted words)",
+  12: "X", // (word's last char)"
+  13: "unknown" // (word's last char)"
 }
+/*original regex : -------------------------------
+([:#@]([^ \t\r\n:#@>;-])*[>;-])|([:#@]([^ \t\r\n:#@>;-])+)|
+(([^ \t\r\n:#@>;-])+[>;-])|(::)|([ \t]+)|
+((\r|\n|\r\n))|(([^ \t\r\n:#@>;-])+)|(.+)
 
-
-
-
-
-var rgx = {};
-
-rgx.replaceDot = function (str) {
-  return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-};
-
-new RegExp("regex", "g");
-
-var text = "bonjour hello :buongiorno :h1>"
-
-const RE_DATE = /(?<year>[0-9]{4})-(?<month>[0-9]{2})-(?<day>[0-9]{2})/;
-
-const matchObj = RE_DATE.exec('1999-12-31');
-const year = matchObj.groups.year; // 1999
-const month = matchObj.groups.month; // 12
-const day = matchObj.groups.day; // 31
-
-
-
-
-// we could do a dynamic_regex.js module
-// word = nonWordChar.one() + nonWordChar.not().many() + nonWordChar.one()
-// I tried but for now it's waste of time
-
-// I won't use named groups for compatibility reasons
-
-var invisibleC = " \\t\\n\\r";
-var nonWordC = invisibleC+":;,()/\\\\><";
-
-var rules = {};
-
-rules.word = new RegExp (
-  "["+nonWordC+"]?(?<word>[^"+nonWordC+"]+)["+nonWordC+"]?",
-  "g");
-
-rules.separated = new RegExp (
-  "(([^"+invisibleC+"]+)|(["+invisibleC+"]+))",
-  "g");
-
+it has 2 incoherences
+- before last group is double
+- last group englobes a set
+but please don't change the process of writing it
+unless you truly understood the spirit of it
 */
+
+// human parser -------------------------------------------------
+humanW.parse = function (script) {
+  var parsingRex = new RegExp ( humanW.rexString, "g" ),
+    humanDOM = [],
+    array = parsingRex.exec(script);
+
+  while ( array !== null && humanDOM.length < 1000) {
+    var humanElement = {};
+    humanElement["value"] = array[0];
+
+    for ( var i = 1; i<array.length; i++ ) {
+      if ( array[i] == array[0] ) {
+        humanElement["group"] = i;
+        humanElement["type"] = humanW.rexGroups[i];
+        break;
+      }// I am sure there is a FASTER way of doing it
+    }// but for now it works good and CLEAN
+    humanDOM.push( humanElement );
+
+    array = parsingRex.exec(script);
+  };
+
+  return humanDOM;
+};
