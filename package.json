@@ -1,6 +1,6 @@
 {
   "name": "fluidite",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "NOT READY yet >> A markup language for blog editing (part of dedale project)",
   "main": "fluidite.js",
   "scripts": {

@@ -90,6 +90,7 @@ machineW.spaceS = new rex.set(" \\t");// no \s because it contains \r
 machineW.carriageC = new rex.chars("\\r");
 machineW.newLineC = new rex.chars("\\n");
 
+
 // processing the regexes ---------------------------------
 machineW.openOperatorS = new rex.set (
   machineW.listenOperatorC.one+
@@ -177,27 +178,37 @@ humanW.rexGroups = {
   10: "X", // (lineBreak again)",
   11: "word", // (non interpreted words)",
   12: "X", // (word's last char)"
-  13: "unknown" // (word's last char)"
+  13: "unknown"
 }
 /*original regex : -------------------------------
 ([:#@]([^ \t\r\n:#@>;-])*[>;-])|([:#@]([^ \t\r\n:#@>;-])+)|
 (([^ \t\r\n:#@>;-])+[>;-])|(::)|([ \t]+)|
 ((\r|\n|\r\n))|(([^ \t\r\n:#@>;-])+)|(.+)
 
-it has 2 incoherences
+it has some incoherences
 - before last group is double
-- last group englobes a set
+- last group englobes a set...
 but please don't change the process of writing it
 unless you truly understood the spirit of it
 */
+
+// parameter variable to place somewhere accessible -----------
+var maxSemes = -1
+var maxLines = -1;
+// -1 for unlimited, otherwise it will floor the while
+
 
 // human parser -------------------------------------------------
 humanW.parse = function (script) {
   var parsingRex = new RegExp ( humanW.rexString, "g" ),
     humanDOM = [],
+    lines = 0,
     array = parsingRex.exec(script);
 
-  while ( array !== null && humanDOM.length < 1000) {
+  while ( array !== null && 
+    lines !== maxLines &&
+    humanDOM.length !== maxSemes )
+  {
     var humanElement = {};
     humanElement["value"] = array[0];
 
@@ -208,6 +219,9 @@ humanW.parse = function (script) {
         break;
       }// I am sure there is a FASTER way of doing it
     }// but for now it works good and CLEAN
+    if ( humanElement.type == "lineBreak" ) {
+      lines += 1;
+    }
     humanDOM.push( humanElement );
 
     array = parsingRex.exec(script);

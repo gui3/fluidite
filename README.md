@@ -5,6 +5,9 @@ a markup language to fit the dedale app
 not working for now, it is USELESS to CLONE or INSTALL it**\
 (unless you are interested in developing it)
 
+want to [get a glimpse](#example) ?
+want to [participate](#makingOf) ?
+
 ## contents
 - [PRESENTATION](#presentation)
   - [principle](#principle)
@@ -19,11 +22,11 @@ not working for now, it is USELESS to CLONE or INSTALL it**\
     - [close priority](#closePriority)
   - [specific rules](#specificRules)
     - [hashtags #](#hashtags)
-    - [at links @](#ats)
+    - [references @](#ats)
     - [properties](#properties)
     - [invisibles](#invisibles)
-    - [citations :'](#citations)
-    - [full text citations :"](#fullText)
+    - [soft quotes :'](#softQuotes)
+    - [hard quotes :"](#hardQuotes)
     - [soft comments :/](#softComs)
     - [hard comments :x](#hardComs)
     - [endline functions :>](#endLines)
@@ -41,11 +44,8 @@ not as simple as markdown,
 but more permissive :
 you sould be able to write almost
 anything you want and render as such,
-for example an ASCI bar.*
-```
-#hashtags and @citations
-```
-*are meant to be part of the language itself*
+for example an ASCI bar. #hashtags and @references
+are meant to be part of the language itself*
 
 [=> top](#top)
 
@@ -92,13 +92,13 @@ or to search for some #hashtags;
 
 for mails, do you prefer
 :mail guillaume.3.7.13@gmail.fr mail;
-or @guillaume.3.7.13@gmail.fr@; ?
+or @guillaume.3.7.13@gmail.fr; ?
         (I like both)
 
 :/
 this will not appear in html,
 but this page has an author :
-#author:: guillaume3 #;
+#author:: guillaume3 :;
 /;
 
 :x this is a true comment,
@@ -144,6 +144,7 @@ functions return html (or any chosen rendering langage)
 ```
 see specific rules.
 
+[=> top](#top)
 
 ### <a name="renderUnknown"></a>"render unknown" rule
 when a word matches a machine call,
@@ -158,6 +159,8 @@ it will also be ignored and rendered as is (:hello)
 
 
 ### <a name="separateWords"></a>"separate words" rule
+*(this rule is not sure, we'll see by the coding)*
+
 to be interpreted, words must be separated
 with at least one invisible (space, linebreak, tab)
 or one non-word character ( : ; / ( ) , ...)
@@ -173,7 +176,7 @@ all tags open since the call of this function are closed too,
 there is no tresspassing between arguments.\
 ex :
 ```
-:h1 this title wil be :em italic till the end h1;
+:h1 this title will be :em italic till the end h1;
 this text is not italic anymore
 ```
 
@@ -185,21 +188,36 @@ this text is not italic anymore
 
 ### <a name="hashtags"></a># hashtags
 ```
-#name;
+#name; or :# name with spaces #;
 ```
-or ```#: name with spaces #;```\
-creates either
+
+**points at a search, or any unprecise item.**
+
+in my mind, it creates either
 - a link to adress **(current page)/hashtag?name%20with%20spaces**
 - a link to function ```_fluidite.hashtag("name with spaces");```
 
 depending of fluidite core properties defined by ...you
 
-### <a name="ats"></a>@ at links
+### <a name="ats"></a>@ references
 ```
-@ref;
+@ref; or @ref :: options @;
 ```
-or ```@ref:: options @;```\
-creates either
+
+**points at any precise point**
+
+this one is not settled yet, could redirect
+- either to the website itself (go to a precise page, an anchor)
+- or to the whole web with an url,
+
+and in my dreams, it could even take
+other precise and identifiable actions like
+- send a mail
+- get an image
+- import a youtube/dailymotion video
+- load a script like css
+
+for now, in my mind it creates either
 - a link to adress **https://ref**
 - a link to adress **(currentpage)/at/ref**
 - a link to function ```_fluidite.at(ref, options);```
@@ -209,7 +227,9 @@ Or depending on fluidite core properties defined by ...you again,
 i'm not settled on this for now
 
 ### <a name="properties"></a>properties
-**#name :: definition #;**
+```
+#name :: definition :;
+```
 stores "definition" into the variable "name"\
 that can be called later with ":name;"
 
@@ -237,7 +257,7 @@ text;
 
 [=> top](#top)
 
-### <a name="citations"></a>:' citations ';
+### <a name="softQuotes"></a>:' soft quotes ';
 to begin or end an argument with invisibles
 one must use :' ';\
 this function is one of the few
@@ -253,7 +273,7 @@ that don't need an invisible after
 text;
 ```
 
-### <a name="fullText"></a>:" full text citations ":
+### <a name="hardQuotes"></a>:" hard quotes ":
 calls like :hello; are still translated inside :' ';,
 to make a text full text, use  :" ";\
 This function is the second not to need a separated word
@@ -264,6 +284,8 @@ This function is the second not to need a separated word
   you can also call anything here with no danger
   like #; @; or #hello;";
 ```
+
+[=> top](#top)
 
 ### <a name="softComs"></a>:/ soft comments /;
 to **hide** something from the renderer,
@@ -280,6 +302,8 @@ one should use :x x;
 ```
 this is text :x this is comment x;
 ```
+
+[=> top](#top)
 
 ### <a name="endLines"></a>:f> endline functions
 one that would be very nice,
@@ -313,6 +337,43 @@ ________
 
 
 # <a name="makingOf"></a>Making Of
+
+## <a name="pull"></a>Pull rules
+Ok the project is ambitious,
+but if you want to participate, you are **most welcome**
+
+here are the few rules to keep it coherent
+
+- priorities in writing
+Let's keep some guideline across the code
+
+  - readable first
+
+  today computers are powerfull,
+  let's write something easy to read,
+  with spaces, linebreaks
+  and lots of comments, even if it costs,
+  those who need can minify
+
+  - flexible first ex-aequo
+
+  let's store as many core parameters,
+  and assemble them in logic order,
+  so they can be adapted later.
+  (ex the regex creator instead of a regex string)
+
+  - fast third
+
+  if we can make the code fast,
+  it's after the readability,
+  but it's cool too
+
+  - light last
+
+  computers are POWERFUL today,
+  I prefer big objects with clear property names,
+  parsing a few strings should'nt kill your memory.
+
 
 ## <a name="done"></a>What's done
 or what's in progress, since nothing is done yet
@@ -357,7 +418,7 @@ humanW.rexGroups = {
   10: "X", // (lineBreak again)",
   11: "word", // (non interpreted words)",
   12: "X", // (word's last char)"
-  13: "unknown" // (word's last char)"
+  13: "unknown"
 }
 ```
 
@@ -369,6 +430,11 @@ here is the big regex if you want to try it
 (([^ \t\r\n:#@>;-])+[>;-])|(::)|([ \t]+)|
 ((\r|\n|\r\n))|(([^ \t\r\n:#@>;-])+)|(.+)
 ```
+
+**THIS WILL CHANGE** - I forgot the :# multi hashtags #;
+and the @references :: with options @;
+and the #property :: setter :;
+(whose syntaxes have changed anyway)
 
 ### next step
 
