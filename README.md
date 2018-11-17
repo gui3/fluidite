@@ -29,6 +29,7 @@ not working for now, it is USELESS to CLONE or INSTALL it**\
     - [endline functions :>](#endLines)
     - [kill line command :- (?)](#killLine)
 - [MAKING OF](#makingOf)
+  - [what's done](#done)
   - [what's next (to-do list)](#next)
 
 # <a name="presentation"></a>Presentation
@@ -275,7 +276,7 @@ one that would be very nice,
 this is text :x> this is an endline comment
 ```
 
-### <a name="killLine"></a>:f> :- kill line command ???
+### <a name="killLine"></a>:- kill line command ???
 struggling with the idea of joined lines, with no linebreak,
 came out the idea of the kill line command :- .
 
@@ -310,8 +311,5 @@ kind of cool)
 ## <a name="next"></a>What's next (to-do list)
 there's all to do at the moment,
 come back later for a real to-do list.
-
-(currently working on regexes for the parser to create a fDOM,
-kind of cool)
 
 [=> top](#top)
