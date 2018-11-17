@@ -73,7 +73,7 @@ but you guess, fluidity was taken. In npm, in github,
 everywhere ... finding a new name is a pain, so I'll settle there
 for the french translation **fluidité**, with no accent.
 
-Ok now let's code this as good as I can.
+Ok now let's code this as good as we can.
 
 [=> top](#top)
 
@@ -188,12 +188,15 @@ depending of fluidite core properties defined by ...you
 ```
 @ref;
 ```
-or ```@ref: options @;```\
+or ```@ref:: options @;```\
 creates either
-- a link to adress **https://ref?options**
+- a link to adress **https://ref**
+- a link to adress **(currentpage)/at/ref**
 - a link to function ```_fluidite.at(ref, options);```
 
-depending of fluidite core properties defined by ...you again
+depending of ... options ?
+Or depending on fluidite core properties defined by ...you again,
+i'm not settled on this for now
 
 ### <a name="properties"></a>properties
 **#name :: definition #;**
