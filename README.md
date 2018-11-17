@@ -6,26 +6,32 @@ not working for now, it is USELESS to CLONE or INSTALL it**\
 (unless you are interested in developing it)
 
 ## contents
-- [principle](#principle)
-- [why fluidite ?](#why)
-- [example](#example)
-- [general rules](#generalRules)
-  - [render all](#renderAll)
-  - [machine call](#machineCall)
-  - [render unknown](#renderUnknown)
-  - [separate words](#separateWords)
-  - [close priority](#closePriority)
-- [specific rules](#specificRules)
-  - [hashtags #](#hashtags)
-  - [at links @](#ats)
-  - [properties](#properties)
-  - [invisibles](#invisibles)
-  - [citations :'](#citations)
-  - [full text citations :"](#fullText)
-  - [soft comments :/](#softComs)
-  - [hard comments :x](#hardComs)
-  - [endline functions :>](#endLines)
-- [what's next (to-do list)](#next)
+- [PRESENTATION](#presentation)
+  - [principle](#principle)
+  - [why fluidite ?](#why)
+  - [example](#example)
+- [SYNTAX](#syntax)
+  - [general rules](#generalRules)
+    - [render all](#renderAll)
+    - [machine call](#machineCall)
+    - [render unknown](#renderUnknown)
+    - [separate words](#separateWords)
+    - [close priority](#closePriority)
+  - [specific rules](#specificRules)
+    - [hashtags #](#hashtags)
+    - [at links @](#ats)
+    - [properties](#properties)
+    - [invisibles](#invisibles)
+    - [citations :'](#citations)
+    - [full text citations :"](#fullText)
+    - [soft comments :/](#softComs)
+    - [hard comments :x](#hardComs)
+    - [endline functions :>](#endLines)
+    - [kill line command :- (?)](#killLine)
+- [MAKING OF](#makingOf)
+  - [what's next (to-do list)](#next)
+
+# <a name="presentation"></a>Presentation
 
 ## <a name="principle"></a>principle
 *fluidité should be a markup language
@@ -102,6 +108,8 @@ htmlSection;
 
 [=> top](#top)
 
+
+# <a name="syntax"></a>Syntax
 
 ## <a name="generalRules"></a>general rules
 *let's write OK by the time a rule works*
@@ -267,43 +275,43 @@ one that would be very nice,
 this is text :x> this is an endline comment
 ```
 
+### <a name="killLine"></a>:f> :- kill line command ???
+struggling with the idea of joined lines, with no linebreak,
+came out the idea of the kill line command :- .
+
+anything after, including the linebreak, would be hard commented.
+This provides also a quicker comment syntax than :x>.
+
+```
+this is line ONE :-
+this is also line ONE :- this is "killed"
+this is still line ONE
+```
+
+**the problem is** it's easy to type :- in a text,
+a little too easy, and the purpose of *fluidité*
+is to be permissive and allow anything
+someone reasonable would type...
+
 [=> top](#top)
 
 ________
+
+
+# <a name="makingOf"></a>Making Of
+
+## <a name="done"></a>What's done
+
+- nothing
+
+(currently working on regexes for the parser to create a fDOM,
+kind of cool)
 
 ## <a name="next"></a>What's next (to-do list)
 there's all to do at the moment,
 come back later for a real to-do list.
 
-### the linebreak problem
-if one wants to write code in little lines
-but not have the linebreak (join two lines)
-he could use
-```
-this is line ONE :x
-x;this is still line ONE
-```
-but this syntax is quite unfriendly,
-we could find some ending tag to signify
-"we don't want the linebreak", like
-```
-this is line ONE :-
-this is also line ONE
-```
-in this case, this operator (:- for now)
-would be a non-separated word too.
-The problem is what to do with a :-
-that would not be at the end of the line ?
-Shall we comment all the remaining ? this creates doublon
-with :x>, and we can't give linebreak removal to an endline comment,
-that would be a pain :
-```
-lorem ipsum :x> this is endline comment
-this text would come after Lorem ipsum
-that we don't want
-```
-this is no urgent issue, but I think I'll settle for :-
-and use it only at the end of lines, otherwise "render unknown" rule.
-
+(currently working on regexes for the parser to create a fDOM,
+kind of cool)
 
 [=> top](#top)
