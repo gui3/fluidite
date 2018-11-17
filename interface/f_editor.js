@@ -37,6 +37,11 @@ v 0.4.3
       toolBar.appendChild(doc.createTextNode("toolBar"));
 
 
+
+
+
+
+
       editor.appendChild(toolBar);
 
       parentElement.appendChild(editor);

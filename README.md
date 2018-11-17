@@ -74,10 +74,10 @@ ____________
 
 ## <a name="example"></a>example
 ```
-:h1> this is a h1 title with class ._fluidite
+:h1> this is a h1 title
 
 :hLine;
-above this should be a line
+          above this should be a line
 
 you need to go to @https://thisPage;
 or to search for some #hashtags;

@@ -1,11 +1,35 @@
 
 
-var FOM = {
-
+var fom_Element = {
+  children: [
+    fom.element,
+    fom.element
+  ],
+  type: "function",
+  value: "h1",
+  id: 0
 }
 
-var f_Element = {
-  children:
+
+var FOM = {
+  type: "definition",
+  value: undefined,
+  children: {
+    fom.element{
+      type: "function",
+      value: "h1",
+      children: [
+        fom.element{
+          type: "text",
+          value: "there is the title"
+        }
+      ]
+    },
+    fom.element{
+
+    }
+  }
+
 }
 
 

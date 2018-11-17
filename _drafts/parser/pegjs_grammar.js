@@ -4,8 +4,25 @@ to be compiled in
 https://pegjs.org/online
 */
 
+
 script
-  = (line / backspace)*
+  = elements:(element)*
+  { return {script: elements}}
+
+element
+  = open:(tag)* argument:(.)+ close:(tag)*
+  {return {element:
+  	{open: open,
+    close: close,
+    argument: argument}}
+  }
+
+tag
+  = ":"
+
+
+
+
 
 line
   = $([^\n]+)
@@ -15,6 +32,7 @@ backspace
 
 
 
+// EXAMPLES ----------------------------------------------
 
 
 start
