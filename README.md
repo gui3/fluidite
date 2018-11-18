@@ -27,8 +27,8 @@ want to [participate](#makingOf) ?
     - [invisibles](#invisibles)
     - [soft quotes :'](#softQuotes)
     - [hard quotes :"](#hardQuotes)
-    - [soft comments :/](#softComs)
-    - [hard comments :x](#hardComs)
+    - [soft comments :!](#softComs)
+    - [hard comments :/](#hardComs)
     - [endline functions :>](#endLines)
     - [kill line command :- (?)](#killLine)
 - [MAKING OF](#makingOf)
@@ -87,24 +87,24 @@ ____________
 :hLine;
           above this should be a line
 
-you need to go to @https://thisPage; :-
+you need to go to :@https://thisPage@; :-
 or to search for some #hashtags;
 
 for mails, do you prefer
 :mail guillaume.3.7.13@gmail.fr mail;
-or @guillaume.3.7.13@gmail.fr; ?
+or @guillaume.3.7.13@gmail.fr@; ?
         (I like both)
 
-:/
+:!
 this will not appear in html,
 but this page has an author :
 #author:: guillaume3 :;
-/;
+!;
 
-:x this is a true comment,
- i can write anything x;
+:/ this is a true comment,
+ i can write anything /;
 
-some text :x> same here, but it's an #endline; comment
+some text :/> same here, but it's an #endline; comment
 
 :translate.html
   <p>this section is rendered as is<br/>
@@ -163,10 +163,10 @@ it will also be ignored and rendered as is (:hello)
 
 to be interpreted, words must be separated
 with at least one invisible (space, linebreak, tab)
-or one non-word character ( : ; / ( ) , ...)
+(((or one non-word character ( : ; / ( ) , ...) )))
 
 **notable exceptions**\
-:' :" :/ and :x at least can be joined to another word,
+:' :" :! :/ :@ :# at least can be joined to another word,
 see specific rules.
 
 
@@ -201,8 +201,9 @@ depending of fluidite core properties defined by ...you
 
 ### <a name="ats"></a>@ references
 ```
-@ref; or @ref :: options @;
+@ref; or :@ ref @; or :@ ref :: options @;
 ```
+*syntax to be reviewed*
 
 **points at any precise point**
 
@@ -225,6 +226,12 @@ for now, in my mind it creates either
 depending of ... options ?
 Or depending on fluidite core properties defined by ...you again,
 i'm not settled on this for now
+
+**syntax precision**
+since http adresses may contain ";"
+the full tag :@ref@; is preferred,
+but the quick tag @ref; could work
+for other purposes like mails
 
 ### <a name="properties"></a>properties
 ```
@@ -287,20 +294,20 @@ This function is the second not to need a separated word
 
 [=> top](#top)
 
-### <a name="softComs"></a>:/ soft comments /;
+### <a name="softComs"></a>:! soft comments !;
 to **hide** something from the renderer,
 but still have the content **interpreted**,
-one should use :/ /;
+one should use :! !;
 ```
 this text appear
-:/ this text is hidden but :hello; is called /;
+:! this text is hidden but :hello; is called !;
 ```
 
-### <a name="hardComs"></a>:x hard comments x;
+### <a name="hardComs"></a>:/ hard comments !;
 to comment, with **no render AND no interpretation**,
-one should use :x x;
+one should use :/ /;
 ```
-this is text :x this is comment x;
+this is text :/ this is comment /; text again
 ```
 
 [=> top](#top)
@@ -310,7 +317,7 @@ one that would be very nice,
 :F> would take the end of line and send it to F
 ```
 :h2> this is a title
-this is text :x> this is an endline comment
+this is text :/> this is an endline hard comment
 ```
 
 ### <a name="killLine"></a>:- kill line command ???

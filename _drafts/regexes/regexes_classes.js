@@ -10,7 +10,7 @@ var fli =
 :hLine;
           above this should be a line
 
-you need to go to @https://thisPage; :-
+you need to go to :@https://thisPage@; :-
 or to search for some #hashtags;
 
 for mails, do you prefer
@@ -18,16 +18,16 @@ for mails, do you prefer
 or @guillaume.3.7.13@gmail.fr@; ?
         (I like both)
 
-:/
+:!
 this will not appear in html,
 but this page has an author :
-#author:: guillaume3 #;
-/;
+#author:: guillaume3 :;
+!;
 
-:x this is a true comment,
- i can write anything x;
+:/ this is a true comment,
+ i can write anything /;
 
-some text :x> same here, but it's an #endline; comment
+some text :/> same here, but it's an #endline; comment
 
 :translate.html
   <p>this section is rendered as is<br/>
@@ -37,7 +37,7 @@ some text :x> same here, but it's an #endline; comment
 translate.html;
 
 :h2 unknown sequences h2; (suggest more)
- :  ;     ;:
+ :  ;    ;:
 `
 
 
@@ -77,25 +77,28 @@ var machineW = {} ;
 
 //open operators -----------------------
 machineW.listenOperatorC = new rex.chars(":");
-machineW.hastagOperatorC = new rex.chars("#");
+machineW.hashtagOperatorC = new rex.chars("#");
 machineW.atOperatorC = new rex.chars("@");
 // close operators --------------------
 machineW.endlineOperatorC = new rex.chars(">");
 machineW.execOperatorC = new rex.chars(";");
-machineW.noBrOperatorC = new rex.chars("-");
+machineW.noBrOperatorC = new rex.chars("\\-");
 // others ----------------------------
-machineW.setOperatorC = new rex.chars("::");
 
-machineW.spaceS = new rex.set(" \\t");// no \s because it contains \r
 machineW.carriageC = new rex.chars("\\r");
 machineW.newLineC = new rex.chars("\\n");
-
+machineW.spaceS = new rex.set(" \\t");// no \s because it contains \r
+machineW.nonLabelS = new rex.set(
+  ",\\\\<=+*%°ç^_`\\-&|([{~}\\]\\)§!?$£¤€"+
+  "."//this little one could be useful one day
+  // /!@#'" must be kept as labels for special functions
+)
+machineW.specialS = new rex.set("/!@#'\":")
 
 // processing the regexes ---------------------------------
 machineW.openOperatorS = new rex.set (
   machineW.listenOperatorC.one+
-  machineW.hastagOperatorC.one+
-  machineW.atOperatorC.one
+  machineW.hashtagOperatorC.one
 )
 machineW.closeOperatorS = new rex.set(
   machineW.endlineOperatorC.one+
@@ -118,38 +121,66 @@ machineW.endWordS = new rex.set (
   machineW.openOperatorS.raw+
   machineW.closeOperatorS.raw
 )
-machineW.labelCharG = new rex.group (
-  machineW.endWordS.not
+machineW.wordS = new rex.set (
+  "^"+
+  machineW.endWordS.raw
 )
+machineW.labelS = new rex.set (
+  "^"+
+  machineW.endWordS.raw+
+  machineW.nonLabelS.raw
+)
+// specials --------------------------------
+machineW.loneSpecialOperatorS = new rex.set(
+  machineW.hashtagOperatorC.one+
+  machineW.atOperatorC.one
+)
+machineW.loneSpecialG = new rex.group(
+  machineW.loneSpecialOperatorS.one+
+  machineW.wordS.many+
+  machineW.execOperatorC.one
+)
+machineW.openSpecialC = new rex.chars(
+  machineW.listenOperatorC.one+
+  machineW.specialS.one
+)
+machineW.closeSpecialC = new rex.chars(
+  machineW.specialS.one+
+  machineW.execOperatorC.one
+)
+
+
 
 // Human Words _________________________________________________
 var humanW = {};
 
 humanW.loneTagG = new rex.group(
+  machineW.loneSpecialG.raw+"|"+
   machineW.openOperatorS.one+
-  machineW.labelCharG.any+
+  machineW.labelS.any+
   machineW.closeOperatorS.one
 );
 humanW.openTagG = new rex.group(
+  machineW.openSpecialC.one+"|"+
   machineW.openOperatorS.one+
-  machineW.labelCharG.many
+  machineW.labelS.many
 );
 humanW.closeTagG = new rex.group(
-  machineW.labelCharG.many+
+  machineW.closeSpecialC.one+"|"+
+  machineW.labelS.many+
   machineW.closeOperatorS.one
-);
-humanW.setTagG = new rex.group(
-  machineW.setOperatorC.one
 );
 humanW.spacingG = new rex.group(
   machineW.spaceS.many
 );
-humanW.lineBreakG = new rex.group(
-  machineW.endLineG.one
-);
+humanW.lineBreakG = machineW.endLineG;
+
 humanW.wordG = new rex.group(
-  machineW.labelCharG.many
+  machineW.wordS.many
 );
+humanW.leftoverG = new rex.group(
+  machineW.invisibleS.not+"+"
+)
 
 // HUMAN PARSER ________________________________________________
 
@@ -158,38 +189,34 @@ humanW.rexString =
   humanW.loneTagG.one+"|"+
   humanW.openTagG.one+"|"+
   humanW.closeTagG.one+"|"+
-  humanW.setTagG.one+"|"+
   humanW.spacingG.one+"|"+
   humanW.lineBreakG.one+"|"+
-  humanW.wordG.one+
-  "|(.+)" // gets all words not taken, for instance a single : or ;
+  humanW.wordG.one+"|"+
+  humanW.leftoverG.one
   ;
 // regex groups in human word parser -----------
 humanW.rexGroups = {
-  1: "loneTag",
-  2: "X", // (loneTag label's last char)",
-  3: "openTag",
-  4: "X", // (openTag label's last char)",
-  5: "closeTag",
-  6: "X", // (closeTag label's last char)",
-  7: "setTag",
-  8: "spacing",
-  9: "lineBreak",
-  10: "X", // (lineBreak again)",
-  11: "word", // (non interpreted words)",
-  12: "X", // (word's last char)"
-  13: "unknown"
+  1: "lonetag",
+  2: "opentag",
+  3: "closetag",
+  4: "spacing",
+  5: "linebreak",
+  6: "word",
+  7: "leftover",
 }
 /*original regex : -------------------------------
-([:#@]([^ \t\r\n:#@>;-])*[>;-])|([:#@]([^ \t\r\n:#@>;-])+)|
+v1
+/([:#@]([^ \t\r\n:#@>;-])*[>;-])|([:#@]([^ \t\r\n:#@>;-])+)|
 (([^ \t\r\n:#@>;-])+[>;-])|(::)|([ \t]+)|
-((\r|\n|\r\n))|(([^ \t\r\n:#@>;-])+)|(.+)
-
-it has some incoherences
-- before last group is double
-- last group englobes a set...
-but please don't change the process of writing it
-unless you truly understood the spirit of it
+((\r|\n|\r\n))|(([^ \t\r\n:#@>;-])+)|(.+)/
+v2
+([#@][^ \t\r\n:#>;\-]+;|[:#][^ \t\r\n:#>;\-,\\<=+*%°ç^_`\-&|([{~}\]\)§!?$£¤€.]*[>;\-])|
+(:[/!@#'":]|[:#][^ \t\r\n:#>;\-,\\<=+*%°ç^_`\-&|([{~}\]\)§!?$£¤€.]+)|
+([/!@#'":];|[^ \t\r\n:#>;\-,\\<=+*%°ç^_`\-&|([{~}\]\)§!?$£¤€.]+[>;\-])|
+([ \t]+)|
+(\r|\n|\r\n)|
+([^ \t\r\n:#>;\-]+)|
+([^ \t\r\n]+)
 */
 
 // parameter variable to place somewhere accessible -----------
@@ -205,7 +232,7 @@ humanW.parse = function (script) {
     lines = 0,
     array = parsingRex.exec(script);
 
-  while ( array !== null && 
+  while ( array !== null &&
     lines !== maxLines &&
     humanDOM.length !== maxSemes )
   {
