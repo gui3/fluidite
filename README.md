@@ -88,7 +88,7 @@ ____________
           above this should be a line
 
 you need to go to @https://thisPage
-or to search for some #hashtags;
+or to search for some #hashtags
 
 for mails, do you prefer
 :mail guillaume.3.7.13@gmail.fr mail;
