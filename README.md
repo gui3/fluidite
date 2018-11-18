@@ -303,7 +303,7 @@ this text appear
 :! this text is hidden but :hello; is called !;
 ```
 
-### <a name="hardComs"></a>:/ hard comments !;
+### <a name="hardComs"></a>:/ hard comments /;
 to comment, with **no render AND no interpretation**,
 one should use :/ /;
 ```
