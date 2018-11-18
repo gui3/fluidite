@@ -30,7 +30,7 @@ want to [participate](#makingOf) ?
     - [soft comments :!](#softComs)
     - [hard comments :/](#hardComs)
     - [endline functions :>](#endLines)
-    - [kill line command :- (?)](#killLine)
+    - [kill line command :\ (?)](#killLine)
 - [MAKING OF](#makingOf)
   - [pull rules](#pull)
   - [what's done](#done)
@@ -87,13 +87,14 @@ ____________
 :hLine;
           above this should be a line
 
-you need to go to :@https://thisPage@; :-
+you need to go to @https://thisPage
 or to search for some #hashtags;
 
 for mails, do you prefer
 :mail guillaume.3.7.13@gmail.fr mail;
-or @guillaume.3.7.13@gmail.fr@; ?
-        (I like both)
+or :@ guillaume.3.7.13@gmail.fr @;
+or @guillaume.3.7.13@gmail.fr ?
+        (I like each)
 
 :!
 this will not appear in html,
@@ -104,7 +105,11 @@ but this page has an author :
 :/ this is a true comment,
  i can write anything /;
 
-some text :/> same here, but it's an #endline; comment
+this is here :/> same here, but it's an #endline; comment
+this is on the next line
+
+this and :\ this is an endline comment too
+that are on the same line
 
 :translate.html
   <p>this section is rendered as is<br/>
@@ -188,7 +193,7 @@ this text is not italic anymore
 
 ### <a name="hashtags"></a># hashtags
 ```
-#name; or :# name with spaces #;
+#name or :# name with spaces #;
 ```
 
 **points at a search, or any unprecise item.**
@@ -201,7 +206,7 @@ depending of fluidite core properties defined by ...you
 
 ### <a name="ats"></a>@ references
 ```
-@ref; or :@ ref @; or :@ ref :: options @;
+@ref or :@ ref @; or :@ ref :: options @;
 ```
 *syntax to be reviewed*
 
@@ -235,10 +240,32 @@ for other purposes like mails
 
 ### <a name="properties"></a>properties
 ```
-#name :: definition :;
+#name :: definition #; or :# name :: definition #;
 ```
 stores "definition" into the variable "name"\
 that can be called later with ":name;"
+
+some keywords (hashtags) and properties are seeked
+in the argument of functions,
+and act like options.
+
+You can hide them from the renderer
+by prefixing with !
+```
+:function
+  !#option1
+  !#option2 ::value :;
+<- argument start at the arrow (included)
+some #options can be rendered in
+or !#hidden in the argument
+but the last renders "  " 2 spaces...
+argument finishes here ->
+  !#option3
+:function
+```
+(see hard coms and the :text function)
+
+
 
 ### <a name="invisibles"></a>invisibles
 All invisibles (spaces, tab, linebreaks) are rendered,
@@ -292,6 +319,24 @@ This function is the second not to need a separated word
   like #; @; or #hello;";
 ```
 
+tip : there is no espcaped characters for now,
+to write "; in a hard quote, one could
+close the hard quote twice then open it again
+";";:"
+
+since this sintax is unfriendly,
+a :text function could be defined
+with an hidden property that could be
+defined on the fly as the end key like
+```
+:text
+  !#endKey :: xxx; :;
+there is truly liberty
+"; :; #;
+until the end
+xxx;
+```
+
 [=> top](#top)
 
 ### <a name="softComs"></a>:! soft comments !;
@@ -320,23 +365,19 @@ one that would be very nice,
 this is text :/> this is an endline hard comment
 ```
 
-### <a name="killLine"></a>:- kill line command ???
+### <a name="killLine"></a>:\ kill line command ???
 struggling with the idea of joined lines, with no linebreak,
-came out the idea of the kill line command :- .
+came out the idea of the kill line command :\ .
 
 anything after, including the linebreak, would be hard commented.
-This provides also a quicker comment syntax than :x>.
+This provides also a quicker comment syntax than :x>,
+if you don't need linebreaks.
 
 ```
-this is line ONE :-
-this is also line ONE :- this is "killed"
+this is line ONE :\
+this is also line ONE :\ this is "killed"
 this is still line ONE
 ```
-
-**the problem is** it's easy to type :- in a text,
-a little too easy, and the purpose of *fluidité*
-is to be permissive and allow anything
-someone reasonable would type...
 
 [=> top](#top)
 
