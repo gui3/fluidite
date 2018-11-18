@@ -143,10 +143,9 @@ need to be called with :word and closed with word;
 
 functions return html (or any chosen rendering langage)
 
-**notable exceptions**\
-```
-#hastags and @at words
-```
+**notable exceptions**
+
+hashtags (#) and references (@) words
 see specific rules.
 
 [=> top](#top)
@@ -168,10 +167,10 @@ it will also be ignored and rendered as is (:hello)
 
 to be interpreted, words must be separated
 with at least one invisible (space, linebreak, tab)
-(((or one non-word character ( : ; / ( ) , ...) )))
+or one non-word character ( : ; / ( ) , ...)
 
 **notable exceptions**\
-:' :" :! :/ :@ :# at least can be joined to another word,
+:' :" :@ :# at least can be joined to another word,
 see specific rules.
 
 
@@ -232,15 +231,9 @@ depending of ... options ?
 Or depending on fluidite core properties defined by ...you again,
 i'm not settled on this for now
 
-**syntax precision**
-since http adresses may contain ";"
-the full tag :@ref@; is preferred,
-but the quick tag @ref; could work
-for other purposes like mails
-
 ### <a name="properties"></a>properties
 ```
-#name :: definition #; or :# name :: definition #;
+#name :: definition #; or :# name :: definition :;
 ```
 stores "definition" into the variable "name"\
 that can be called later with ":name;"
