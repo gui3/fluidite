@@ -21,9 +21,8 @@ want to [participate](#makingOf) ?
     - [separate words](#separateWords)
     - [close priority](#closePriority)
   - [specific rules](#specificRules)
-    - [hashtags #](#hashtags)
-    - [references @](#ats)
-    - [properties](#properties)
+    - [keywords #](#keywords)
+    - [references @](#references)
     - [invisibles](#invisibles)
     - [soft quotes :'](#softQuotes)
     - [hard quotes :"](#hardQuotes)
@@ -31,6 +30,8 @@ want to [participate](#makingOf) ?
     - [hard comments :/](#hardComs)
     - [endline functions :>](#endLines)
     - [kill line command :\ (?)](#killLine)
+    - [properties](#properties)
+    - [options](#options)
 - [MAKING OF](#makingOf)
   - [pull rules](#pull)
   - [what's done](#done)
@@ -190,7 +191,7 @@ this text is not italic anymore
 ## <a name="specificRules"></a>specific rules
 *same with OK*
 
-### <a name="hashtags"></a># hashtags
+### <a name="keywords"></a># keywords
 ```
 #name or :# name with spaces #;
 ```
@@ -203,7 +204,7 @@ in my mind, it creates either
 
 depending of fluidite core properties defined by ...you
 
-### <a name="ats"></a>@ references
+### <a name="references"></a>@ references
 ```
 @ref or :@ ref @; or :@ ref :: options @;
 ```
@@ -230,34 +231,6 @@ for now, in my mind it creates either
 depending of ... options ?
 Or depending on fluidite core properties defined by ...you again,
 i'm not settled on this for now
-
-### <a name="properties"></a>properties
-```
-#name :: definition #; or :# name :: definition :;
-```
-stores "definition" into the variable "name"\
-that can be called later with ":name;"
-
-some keywords (hashtags) and properties are seeked
-in the argument of functions,
-and act like options.
-
-You can hide them from the renderer
-by prefixing with !
-```
-:function
-  !#option1
-  !#option2 ::value :;
-<- argument start at the arrow (included)
-some #options can be rendered in
-or !#hidden in the argument
-but the last renders "  " 2 spaces...
-argument finishes here ->
-  !#option3
-:function
-```
-(see hard coms and the :text function)
-
 
 
 ### <a name="invisibles"></a>invisibles
@@ -374,6 +347,39 @@ this is still line ONE
 
 [=> top](#top)
 
+
+### <a name="properties"></a>properties and hidden keywords
+```
+#name :: definition #; or :# name :: definition :;
+```
+stores "definition" into the variable "name"\
+that can be called later with ":name;"
+
+
+### <a name="options"></a>options
+
+some keywords (hashtags) and properties are seeked
+in the argument of functions,
+and act like options.
+
+You can hide them from the renderer
+by prefixing with !
+```
+:function
+  !#option1
+  !#option2 ::value :;
+<- argument start at the arrow (included)
+some #options can be rendered in
+or !#hidden in the argument
+but the last renders "  " 2 spaces...
+argument finishes here ->
+  !#option3
+:function
+```
+(see hard coms and the :text function)
+
+[=> top](#top)
+
 ________
 
 
@@ -415,6 +421,8 @@ Let's keep some guideline across the code
   I prefer big objects with clear property names,
   parsing a few strings should'nt kill your memory.
 
+
+[=> top](#top)
 
 ## <a name="done"></a>What's done
 or what's in progress, since nothing is done yet
