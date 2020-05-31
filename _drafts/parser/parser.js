@@ -41,175 +41,148 @@ translate.html;
 `
 
 
-// REGEXES ---------------------------------------
-rex = {};
+const Parser = function () {
+  this.regexString ="";
+  this.groupNames = {};
+  this.groupNumber = 0;
 
-rex.set = function (raw) {
-  this.raw = raw;
-  this.one = "["+raw+"]"
-  this.any = this.one+"*";
-  this.many = this.one+"+";
-  this.not = "[^"+raw+"]"
-  this.not_any = "[^"+raw+"]*"
-  this.not_many = "[^"+raw+"]+"
-};
-rex.group = function (raw) {
-  this.raw = raw;
-  this.one = "("+raw+")"
-  this.any = this.one+"*";
-  this.many = this.one+"+";
-  //this.not = "(?!"+raw+")"
-};
-
-// Machine parsing ________________________________________________
-var machineW = {} ;
-
-// core DICTIONNARY _____________________
-
-// operators -------------------------------
-machineW.listenOperatorC = ":";
-machineW.execOperatorC = ";";
-machineW.getOperatorC = "\\.";// could be useful one day
-machineW.nextOperatorC = ">";
-machineW.killOperatorC = "\\\\";
-machineW.keyOperatorC = "#";
-machineW.refOperatorC = "@";
-/*
-machineW.sComOperatorC = new rex.chars("!");
-machineW.hComOperatorC = new rex.chars("/");
-machineW.sQuoteOperatorC = new rex.chars("'");
-machineW.hQuoteOperatorC = new rex.chars('"');
-machineW.hQuoteOperatorC = new rex.chars('"');
-*/
-// invisibles ----------------------------
-machineW.carriageC = "\\r";
-machineW.newLineC = "\\n";
-machineW.spaceCs = " \\t";
-// forbidden chars in labels -------------
-// are added : all the existing operators and invisibles
-machineW.outLabelC =
-  ",\\\\<=+*%°ç^_`\\-&|([{~}\\]\\)§!?$£¤€"
-  // /!@#'" must be kept as labels for special functions
-;
-
-// sets ___________________________________
-machineW.operatorS = new rex.set (
-  machineW.listenOperatorC+
-  machineW.getOperatorC+
-  machineW.execOperatorC+
-  machineW.killOperatorC+
-  machineW.keyOperatorC+
-  machineW.refOperatorC
-)
-machineW.spacesS = new rex.set(
-  machineW.spaceCs
-);// no \s because it contains \r
-machineW.invisibleS = new rex.set(
-  machineW.spaceCs+
-  machineW.carriageC+
-  machineW.newLineC
-);
-machineW.endLineG = new rex.group(
-  machineW.carriageC+"|"+
-  machineW.newLineC+"|"+
-  machineW.carriageC+machineW.newLineC
-); // thanks Peter Van der Wal for (\\r\\n|\\r|\\n)
-//https://stackoverflow.com/questions/20056306/match-linebreaks-n-or-r-n
-machineW.nonWordS = new rex.set (
-  machineW.invisibleS.raw+
-  machineW.operatorS.raw
-);
-machineW.nonLabelS = new rex.set(
-  machineW.outLabelC+
-  machineW.nonWordS.raw
-);
-
-// machine semes ______________________________
-
-machineW.listenOpG = new rex.group( machineW.listenOperatorC );
-machineW.execOpG = new rex.group( machineW.execOperatorC );
-machineW.getOpG = new rex.group( machineW.getOperatorC );
-machineW.nextOpG = new rex.group( machineW.nextOperatorC );
-machineW.killOpG = new rex.group( machineW.killOperatorC );
-machineW.keyOpG = new rex.group( machineW.keyOperatorC );
-machineW.refOpG = new rex.group( machineW.refOperatorC );
-
-machineW.lineBreakG = new rex.group( machineW.endLineG.raw );
-machineW.spacingG = new rex.group( machineW.spacesS.many );
-machineW.labelG = new rex.group( machineW.nonLabelS.not_many );
-machineW.wordG = new rex.group( machineW.nonWordS.not_many );
-machineW.leftoverG = new rex.group( ".+" );
-
-// parsing regexp -----------------------------------------
-machineW.rexString =
-  machineW.listenOpG.one+"|"+
-  machineW.execOpG.one+"|"+
-  machineW.getOpG.one+"|"+
-  machineW.nextOpG.one+"|"+
-  machineW.killOpG.one+"|"+
-  machineW.keyOpG.one+"|"+
-  machineW.refOpG.one+"|"+
-  machineW.lineBreakG.one+"|"+
-  machineW.spacingG.one+"|"+
-  machineW.labelG.one+"|"+
-  machineW.wordG.one+"|"+
-  machineW.leftoverG.one
-  ;
-// regex groups in human word parser -----------
-machineW.rexGroups = {
-  1: "listen",
-  2: "exec",
-  3: "get",
-  4: "next",
-  5: "kill",
-  6: "key",
-  7: "ref",
-  8: "linebreak",
-  9: "spacing",
-  10: "label",
-  11: "word",
-  12: "unknown"
-}
-/*the regex : ------------------------------------
-(:)|(>)|(;)|(\\)|(#)|(@)|(\r|\n|\r\n)|([ \t]+)|
-([^,\\<=+*%°ç^_`\-&|([{~}\]\)§!?$£¤€. \t\r\n:>;\\#@]+)|
-([^ \t\r\n:>;\\#@]+)|(.+)
-*/
-
-// parameter variable to place somewhere accessible -----------
-var maxSemes = -1
-var maxLines = -1;
-// -1 for unlimited, otherwise it will floor the while
-
-
-// parser -----------------------------------------------------
-machineW.parse = function (script) {
-  var parsingRex = new RegExp ( machineW.rexString, "g" ),
-    machineDOM = [],
-    lines = 0,
-    array = parsingRex.exec(script);
-
-  while ( array !== null &&
-    lines !== maxLines &&
-    machineDOM.length !== maxSemes )
-  {
-    var machineElement = {};
-    machineElement.value = array[0];
-
-    for ( var i = 1; i<array.length; i++ ) {
-      if ( array[i] == array[0] ) {
-        machineElement.group = i;
-        machineElement.type = machineW.rexGroups[i];
-        break;
-      }// I am sure there is a FASTER way of doing it
-    }// but for now it works good and CLEAN
-    if ( machineElement.type == "lineBreak" ) {
-      lines += 1;
+  this.addMorpheme = function (element) {
+    if ( this.regexString !== "" ) {
+      this.regexString += "|";
     }
-    machineDOM.push( machineElement );
+    this.regexString+= "("+element.syntax+")";
 
-    array = parsingRex.exec(script);
+    var tags = element.tags;
+    this.groupNumber += 1;
+    this.groupNames[this.groupNumber] = tags;
+    return this;
   };
 
-  return machineDOM;
+  this.parse =  function (script, max = -1) {
+    var parsingRex = new RegExp(this.regexString,"g"),
+      morphemeDOM = [],
+      array = parsingRex.exec(script);
+
+    while ( array !== null &&
+      morphemeDOM.length !== max )
+    {
+      var morphemeElement = {};
+      morphemeElement.value = array[0];
+      morphemeElement.tags = "";
+      morphemeElement.groups = [];
+
+      for ( var i = 1; i<array.length; i++ ) {
+        if ( array[i] == array[0] ) {
+          morphemeElement.groups.push(i);
+          morphemeElement.tags += "."+this.groupNames[i];
+          //break;
+        }// I am sure there is a FASTER way of doing it
+      }// but for now it works good and CLEAN
+      morphemeDOM.push( morphemeElement );
+
+      array = parsingRex.exec(script);
+    };
+
+    return morphemeDOM;
+  };
+
+  return this;
 };
+
+var _core = {};
+
+_core.parser = new Parser()
+
+.addMorpheme({
+  tags:"text mail",
+  syntax:"(?:[^ \\t\\r\\n@:]+)" +
+  "@(?:(?:\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|" +
+  "(?:(?:[a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))"
+})
+.addMorpheme({
+  tags:"text url",
+  syntax:"(?:https?|ftp)://[^\\s/$.?#].[^\\s]*"
+})
+
+.addMorpheme({
+  tags:"operator open listen",
+  syntax:":"
+})
+.addMorpheme({
+  tags:"operator close do",
+  syntax:";"
+})
+.addMorpheme({
+  tags:"operator close next",
+  syntax:">"
+})
+.addMorpheme({
+  tags:"operator find",
+  syntax:"\\."
+})
+.addMorpheme({
+  tags:"operator decorator kill",
+  syntax:"\\\\"
+})
+.addMorpheme({
+  tags:"operator marker take",
+  syntax:"#"
+})
+.addMorpheme({
+  tags:"operator marker go",
+  syntax:"@"
+})
+.addMorpheme({
+  tags:"operator decorator silent",
+  syntax:"!"
+})
+.addMorpheme({
+  tags:"operator decorator deaf",
+  syntax:"/"
+})
+.addMorpheme({
+  tags:"operator decorator stubborn",
+  syntax:"'"
+})
+.addMorpheme({
+  tags:"operator decorator idiot",
+  syntax:"\""
+})
+
+.addMorpheme({
+  tags:"invisible space",
+  syntax:" "
+})
+.addMorpheme({
+  tags:"invisible tab",
+  syntax:"\\t"
+})
+.addMorpheme({
+  tags:"invisible linebreak both",
+  syntax:"\\r\\n"
+})
+.addMorpheme({
+  tags:"invisible linebreak carriage",
+  syntax:"\\r"
+})
+.addMorpheme({
+  tags:"invisible linebreak newline",
+  syntax:"\\n"
+})
+.addMorpheme({
+  tags:"text special",
+  syntax:"[,\\\\<=\\+\\*%°ç^`\\-&|\\(\\[\\{~}\\]\\)§!?$£¤€]",
+})
+.addMorpheme({
+  tags:"text label",
+  syntax:
+    "[^"+
+    ",\\\\<=\\+\\*%°ç^`\\-&|\\(\\[\\{~}\\]\\)§!?$£¤€"+//specials
+    ":;>\.\\\\#@'\"!/"+//operators
+    " \\r\\n\\t"+//invisibles
+    "]+"
+})
+.addMorpheme({
+  tags:"text leftovers",
+  syntax:".+"// all characters that remain
+});
